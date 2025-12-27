@@ -1,0 +1,287 @@
+/*GENERAL*/
+body {
+	font-family: "Courier New";
+}
+
+p {
+	margin: 0px;
+	margin-bottom: 10px;
+}
+h1 {
+	font-size: 36px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+h2 {
+	font-size: 24px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+h3 {
+	font-size: 20px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+img {
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+input[type=button] {
+	cursor: pointer;
+}
+
+/*Slider – unfortunately it's quite a pain!*/
+input[type=range] {
+	height: 24px;
+	background-color: transparent;
+	-webkit-appearance: none;
+}
+input[type=range]:focus {outline: none;}
+/*chromium*/
+input[type=range]::-webkit-slider-runnable-track {
+	height: 4px;
+	background: #888888;
+	cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+	margin-top: -10px;
+	width: 13px;
+	height: 24px;
+	background: #eeeeee;
+	border: 2px solid #888888;
+	border-radius: 2px;
+	cursor: pointer;
+	-webkit-appearance: none;
+}
+/*firefox*/
+input[type=range]::-moz-range-track {
+	height: 4px;
+	background: #888888;
+	cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+	width: 9px;
+	height: 20px;
+	background: #eeeeee;
+	border: 2px solid #888888;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	padding-left: 15px;
+	padding-right: 15px;
+	background-color: #eeeeee;
+	border-top: 1px solid #aaaaaa;
+}
+/*defense against footer intrusion*/
+.footerDefense {height: 20px;}
+#githubLogo {
+	position: fixed; bottom: 0px; right: 0px;
+	margin-right: 4px;
+}
+
+/*CONTROLS*/
+.mediumButton {font-size: 18px;}
+.buttonContainer {margin-bottom: 20px;}
+.buttonContainer > input {margin: -2px; font-size: 18px;}
+.secretCarSelect {color: #808080;}
+.pedalContainer {
+	transform: rotate(270deg);
+	margin-top: 90px;
+	margin-bottom: 30px;
+	width: 100px;
+}
+
+.tabSwitchContainer {
+	padding-top: 5px;
+	padding-bottom: 8px;
+	margin-bottom: 15px;
+	border-bottom: 2px solid #888888;
+}
+.tabSwitchContainer > tab{
+	cursor: pointer;
+	margin: 0px;
+	padding: 8px;
+	border: 2px solid #888888;
+}
+.tabSwitchActive {border-bottom: 2px solid white !important;}
+
+/*COMMUNICATION*/
+#popup {
+	z-index: 3;
+	position: absolute;
+	background-color: #dddddd;
+	border: 5px outset #888888;
+	text-align: center;
+	font-size: 18px;
+	padding: 10px;
+	padding-bottom: 0px;
+	display: none;
+}
+.vanish {animation: vanish 0.4s linear forwards;}
+@keyframes vanish {
+	0%   {opacity: 1;}
+	100% {opacity: 0;}
+}
+
+.fakeLink {
+	color: #551a8b;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#tooltip {
+	position: absolute;
+	z-index: 5;
+	background-color: #dddddd;
+	border: 1px solid #888888;
+	padding: 1px 4px 1px 4px;
+	box-shadow: 1px 1px 3px black;
+	font-size: 14px;
+	color: #222222;
+	animation: appear 0.25s linear forwards;
+}
+@keyframes appear {
+	0%   {opacity: 0;}
+	40%  {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+/*GAME*/
+#game {
+	font-size: 20px;
+}
+
+#escapeButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: #dddddd;
+	border: 1px solid #888888;
+	font-size: 26px;
+	cursor: pointer;
+	z-index: 4;
+}
+
+#gameLevelTitle {
+	position: absolute;
+	top: 5px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	font-size: 24px;
+}
+
+#map {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border: 1px solid black;
+}
+
+#leafletMap {
+	position: relative;
+	top: 23px;
+	width: 400px;
+	height: 230px;
+}
+
+#stats {
+	position: absolute;
+	left: 0px;
+}
+#stats > div {
+	height: 140px;
+}
+.statsLeft{
+	float: left;
+	text-align: right;
+	overflow: hidden;
+	border: 1px solid black;
+	border-left: none;
+	border-right: none;
+}
+.statsRight{
+	float: left;
+	text-align: left;
+	padding-left: 15px;
+	overflow: hidden;
+	border: 1px solid black;
+	border-left: none;
+}
+
+#advanced {
+	position: absolute;
+	left: 0px;
+}
+#advanced > div {
+	height: 100px;
+}
+
+#controls {
+	position: absolute;
+	left: 0px;
+	height: 240px;
+	padding-top: 10px;
+}
+.ctrlContainer {
+	float: left;
+	text-align: center;
+}
+
+.gearstickArea {
+	position: absolute;
+	cursor: pointer;
+}
+
+#warning {
+	float: left;
+	padding-left: 80px;
+	font-size: 26px;
+	font-weight: bold;
+	color: red;
+	animation: blinker 0.6s linear infinite;
+}
+@keyframes blinker {
+	50% {opacity: 0;}
+}
+
+#showroomSelectCar {
+	width: 450px;
+	font-size: 18px;
+	font-family: "Courier New";
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#showroomContents {
+	font-size: 20px;
+	cursor: pointer;
+	margin-top: 0px;
+}
+.showroomLeftPanel {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	max-width: 480px;
+}
+.showroomRightPanel {
+	position: absolute;
+	left: 500px;
+}
+.showroomTable {margin-bottom: 20px;}
+.showroomTable td {
+	padding-right: 15px;
+}
+.littleSquare { /*used in showroom map legend*/
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+}

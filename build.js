@@ -1,12 +1,10 @@
-import { resolve } from 'node:path';
+import * as path from 'node:path';
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync, symlinkSync } from 'node:fs';
 
 console.log('BUILDING');
 const template = readFileSync('TEMPLATE.html', 'utf8');
 const toc = readFileSync('TOC.csv', 'utf8').split('\n').filter(l => l.length > 0 && l[0] !== '#');
 if(!existsSync('./dist')) mkdirSync('./dist');
-if(!existsSync('./dist/res')) symlinkSync(resolve('./res'), './dist/res');
-if(!existsSync('./dist/download')) symlinkSync(resolve('./download'), './dist/download');
 
 let dir = readdirSync('./includes');
 
@@ -31,4 +29,15 @@ if(dir.length > 0) {
 	console.warn('WARNING: Unused files in ./includes: ' + dir.join(', '));
 }
 
+symlinkDir('./res');
+symlinkDir('./content');
+symlinkDir('./download');
+
 console.log('FINISHED :)');
+
+function symlinkDir(dir) {
+	const srcDir = path.resolve(dir);
+	const destDir = path.resolve(path.join('./dist', dir));
+	if(existsSync(destDir)) return
+	symlinkSync(srcDir, destDir);
+}

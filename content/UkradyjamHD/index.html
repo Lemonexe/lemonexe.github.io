@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html ng-app="UK" ng-controller="middle">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="Nejlepší budovatelská hra na světě!">
+		<meta name="author" content="Jiří Zbytovský">
+		<title>Ukradyjam: HD edition</title>
+		<script>
+// Do not execute this function unless you are a skilled H4CK0R!!!
+var get_HACKER_achievement = function() {
+	//Doufáme, že kyberútočník zapomene napsat závorky()
+	game.hackTheSystem();
+};
+		</script>
+		<script src="libs/angular.min.js"></script>
+		<script src="app/misc.js" type="text/javascript"></script>
+		<script src="app/data.js" type="text/javascript"></script>
+		<script src="app/dataWis.js" type="text/javascript"></script>
+		<script src="app/middle.js" type="text/javascript"></script>
+		<script src="app/warView.js" type="text/javascript"></script>
+		<script src="app/war.js" type="text/javascript"></script>
+		<script src="app/game.js" type="text/javascript"></script>
+		<script src="app/state.js" type="text/javascript"></script>
+		<script src="app/directives.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="app/style.css">
+		<link rel="shortcut icon" href="res/GUI/favicon.ico">
+	</head>
+	<body ng-keyup="listen4Esc($event)" ng-mousemove="mouseMove($event)" ng-mouseup="mouseUp($event)">
+
+<div id="tooltip" ng-if="s.tooltip.visible" ng-style="s.tooltip.style">{{s.tooltip.message}}</div>
+
+<div id="header">
+	<a class="fakeLink" ng-click="window('intro2')">Úvod</a>
+	<a class="fakeLink" ng-click="window('achievements')">Achievmenty</a>
+	<a class="fakeLink" ng-click="window('options')">Nastavení</a>
+	<a class="fakeLink" ng-click="window('versions')">Verze {{version.join('.')}}</a>
+</div>
+
+<div ng-repeat="m in s.messages track by $index" class="popup" ng-style="getPopupStyle($index)">
+	<p ng-repeat="l in m track by $index">{{l}}</p>
+	<p style="text-align: center;"><input type="button" ng-click="s.messages.splice($index, 1)" value="OK" tooltip="Esc zavře, Del zavře VŠECHNY zprávy"></p>
+</div>
+
+<!-- GAME BOX -->
+<div id="gameContainer" ng-style="mergeStyles(['containerLeft', 'containerHeight', 'gameWidth'])" ng-switch="ctrl.window">
+
+	<div ng-switch-when="intro">
+		<div ng-include="'app/ng/intro.html'"></div>
+		<p style="text-align: center;"><input type="button" ng-click="initGame();" value="ZAČÍT HRU"></p>
+	</div>
+
+	<div ng-switch-when="intro2">
+		<escape-win></escape-win>
+		<div ng-include="'app/ng/intro.html'"></div>
+	</div>
+
+	<div ng-switch-when="achievements" ng-style="mergeStyles(['containerHeight', 'gameWidth'])" id="achievements">
+		<escape-win></escape-win>
+		<h1>Achievementy 🏆</h1>
+		<div ng-if="getAchievementGoals().length > 0"><p>Tyto úspěchy můžete splnit: <a class="fakeLink" ng-click="showTODO = !showTODO">{{showTODO ? 'Skrýt' : 'Vypsat'}}</a></p>
+		<ul ng-if="showTODO">
+			<li ng-repeat="g in getAchievementGoals()">{{g}}</li>
+		</ul></div>
+		<hr>
+		<p>Splněno {{s.achievements.length}}/{{getAchievementCount()}}, <i>kurzíva značí skrytý achievement</i>:</p>
+		<div ng-repeat="a in s.achievements" ng-class="{secret: achs[a].secret}">
+			<p><b>{{achs[a].name}}</b> ({{achs[a].description}})<br>
+			{{achs[a].flavor}}</p>
+			<p></p>
+		</div>
+	</div>
+
+	<div ng-switch-when="options">
+		<escape-win></escape-win>
+		<h1>Nastavení 🔧</h1>
+		<p>Velikost okna <select ng-model="ctrl.zoom" ng-options="x for x in zoomOptions" ng-change="resize()"></select></p>
+		<p>Zobrazit mřížku bitevního pole <input type="checkbox" ng-model="ctrl.drawBattleGrid"></p>
+		<p ng-if="s.p.unlockAutoodys">Pokračovat odysseu automaticky <input type="checkbox" ng-model="ctrl.autoodys"></p>
+		<p>Manuální save do souboru
+			<span fake-button onclick="saveService.manualSave()" download="Ukradyjam.json"
+				tooltip="stáhnout soubor s daty vaší říše">Uložit</span>
+			<input type="file" id="fileUpload" file-upload class="hidden">
+			<label fake-button for="fileUpload" tooltip="nahrát soubor s daty vaší říše">Načíst</label>
+		</p>
+		<p>Automatický save
+			<span fake-button onclick="confirm('Opravdu si přejete smazat veškerá vaše data v této hře?') && saveService.purge()" tooltip="resetovat hru">Smazat</span>
+		</p>
+	</div>
+
+	<div ng-switch-when="versions">
+		<escape-win></escape-win>
+		<h1>Historie Ukradyjamu 📜</h1>
+		<p>Tento seznam pouze shrnuje nejvýznamější změny v důležitých verzích. Pokud Vás zajímá zdrojový kód aplikace včetně jeho vývoje,
+			navštivte GitHub <a href="https://github.com/Lemonexe/ukradyjam-hd" target="_blank">repozitář</a>.</p>
+		<ul>
+			<li><b>1.2.0</b> (05.06.2021) přidána <b>Odysseia</b></li>
+			<li><b>1.1.6</b> (26.04.2020) přidán Oktoberfest</li>
+			<li><b>1.1.0</b> (07.06.2019) zvětšeno bojiště</li>
+			<li><b>1.0.3</b> (14.05.2019) poslední výzkum</li>
+			<li><b>1.0.0</b> (04.05.2019) <b>oficiální release</b></li>
+			<li><b>0.2.0</b> (21.04.2019) přidána válka</li>
+		</ul>
+	</div>
+
+	<div ng-switch-when="game">
+		<div id="topBar" ng-style="style.gameWidth">
+			<div id="suroviny" ng-style="style.suroviny">
+				<div ng-repeat="i in icons" ng-class="{thisIsBad: isOverflow($index)}" ng-click="accessMine(mineNames[$index])"
+					tooltip="{{(isOverflow($index) ? 'Je třeba dostavět sklad, kapacita je zcela naplněna!' : surNames[$index])}}">
+					<img ng-src="res/GUI/icon_{{i}}.png">{{s.sur[$index].addk(1e4, 1e7)}}&nbsp;
+				</div>
+			</div>
+			<div id="assistents">
+				<img src="res/GUI/head_starosta.png" ng-click="tab('advisorEco')" class="clickImg" tooltip="Starosta">
+				<img src="res/GUI/head_vojak.png" ng-click="tab('advisorArmy')" class="clickImg" tooltip="Generál">
+				<img src="res/GUI/head_vedec.png" ng-click="tab('advisorScience')" class="clickImg" tooltip="Vědec">
+			</div>
+		</div>
+
+		<div id="screen" ng-switch="ctrl.tab" ng-style="screenStyle()">
+
+		<!-- CITY -->
+			<div ng-switch-when="city" ng-style="mergeStyles(['gameWidth', 'gameHeight', 'city'])">
+				<img src="res/GUI/icon_island.png" class="switch clickImg" ng-click="tab('island')" tooltip="Ostrov">
+				<img src="res/GUI/icon_build.png" style="margin: 5px;" ng-show="getAvailableBuild().length > 0" ng-click="ctrl2.showBuildingList = !ctrl2.showBuildingList" class="clickImg">
+
+				<!-- existing buildings-->
+				<img ng-repeat="b in sortBuildings() track by $index" ng-mousedown="buildingMouseDown($event, b)"
+					ng-src="res/build/{{buildings[b.id].img}}" tooltip="{{buildings[b.id].name + ' (' + b.lvl + ')'}}"
+					ng-style="getBuildingStyle(b)" ng-class="{building: b.draggable, clickImg: !b.draggable}">
+
+				<!-- construction interface -->
+				<div id="buildingList" ng-show="ctrl2.showBuildingList" ng-style="style.buildingList">
+					<table>
+						<tr ng-repeat="b in getAvailableBuild()">
+							<td>
+								<img ng-src="res/build/{{buildings[b].img}}" ng-click="buyBuilding(b)" class="clickImg buildOption">
+							</td><td>
+								<b>{{buildings[b].name}}</b>&nbsp;
+								<span ng-repeat="i in icons" ng-if="buildings[b].price(1)[$index] > 0">
+									<img ng-src="res/GUI/icon_{{i}}.png" width="16" height="16">
+									{{buildings[b].price(1)[$index].toFixed(0)}}</span>
+								<br>
+								{{buildings[b].flavor}}
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		<!-- ISLAND -->
+			<div ng-switch-when="island" ng-style="mergeStyles(['gameWidth', 'gameHeight', 'island'])">
+				<img src="res/GUI/icon_city.png" class="switch clickImg" ng-click="tab('city')" tooltip="Město">
+
+				<img src="res/env/prod_pila.png" ng-style="styleislandPila()" ng-click="accessMine('islandPila')" tooltip="Pila" class="clickImg">
+				<img src="res/env/prod_kamen.png" ng-style="islandPos('plaz')" ng-click="accessMine('islandKamen')" tooltip="Kamenitá pláž" class="clickImg">
+				<img src="res/env/prod_syra.png" ng-style="islandPos('syra')" ng-click="accessMine('islandSyra')" tooltip="Krávy" class="clickImg">
+				<img src="res/env/prod_pivo.png" ng-style="islandPos('pivo')" ng-click="accessMine('islandPivo')" tooltip="Pivní plošina" class="clickImg">
+
+				<img ng-src="res/env/polis_{{polisIcon()}}.png" ng-style="islandPos('myPolis')" ng-click="tab('city')" tooltip="Naše město" class="clickImg">
+				<span ng-style="islandPos('myPolisName')" class="strong clickImg" ng-click="tab('city')">{{s.name}}</span>
+				<img src="res/env/polis_E.png" ng-style="islandPos('enemyPolis')" ng-click="tab('islandPolis')" tooltip="Nepřátelská vesnice" class="clickImg">
+				<span ng-style="islandPos('enemyPolisName')" class="strong clickImg" ng-click="tab('islandPolis')">{{(s.battlefield && s.odys.wave === 0) ? '🔥' : '&nbsp;'}}Polis</span>
+
+				<img ng-if="s.p.unlockOdysseia" src="res/env/odysseia.png" ng-style="islandPos('odysseia')" ng-click="tab('islandOdysseia')" tooltip="Hic sunt leones" class="clickImg">
+			</div>
+
+		<!-- BATTLE -->
+			<div ng-switch-when="battle" ng-style="mergeStyles(['gameWidth', 'gameHeight'])" style="overflow: hidden">
+				<escape></escape>
+				<canvas width="600" height="600" ng-style="mergeStyles(['gameWidth', 'gameHeight'])" battle-canvas tooltip-field></canvas>
+				<div ng-show="s.battlefield && s.battlefield.nukeDuration > 0" id="nukeEffect" ng-style="mergeStyles(['gameWidth', 'gameHeight'])"></div>
+			</div>
+
+		<!-- ADVISOR SCREEN TABS -->
+			<div ng-switch-when="advisorEco" ng-style="screenStyle()">
+				<escape></escape><!--directive for escape button-->
+				<h2>Ekonomický přehled</h2>
+				<p>Starosta vám pomůže s vyděláváním prachů a managementem špinavého plebsu.</p>
+				<table class="numTable">
+					<tr><th colspan="2">Finance</th></tr>
+					<tr class="tip" tooltip="daňoví poplatníci · 3 · účinnost výběru">
+						<td>Daňový výběr:</td>
+						<td>{{demMulti([s.pop[0], consts.tax], [game.eff().prachy])}}</td>
+					</tr>
+					<tr class="tip" tooltip="dělníci · 3 · výše platů">
+						<td>Platy dělníků:</td>
+						<td>{{demMulti([(game.popTotal() - s.pop[0]), -consts.wage], [game.eff().plat])}}</td>
+					</tr>
+					<tr class="tip" tooltip="za všechny budovy, roste exponenciálně s úrovní budov">
+						<td>Údržba města:</td>
+						<td>{{demMulti([-game.moneyMaintenance()/game.eff().udrzba], [game.eff().udrzba])}}</td>
+					</tr>
+					<tr class="tip" tooltip="celková finanční bilance za jeden cyklus"><td>&sum;</td><td>{{game.moneyTotal().withSign()}}</td></tr>
+				</table>
+				<table class="numTable tip" tooltip="dělníci · účinnost">
+					<tr><th colspan="2">Těžba</th></tr>
+					<tr><td>Dřevo:</td>  <td>{{demMulti([s.pop[1]], [game.eff().drevo])}}</tr>
+					<tr><td>Kamení:</td> <td>{{demMulti([s.pop[2]], [game.eff().kamen])}}</tr>
+					<tr><td>Sýra:</td>   <td>{{demMulti([s.pop[3]], [game.eff().syra])}}</tr>
+					<tr><td>Pivo:</td>   <td>{{demMulti([s.pop[4]], [game.eff().pivo])}}</tr>
+				</table>
+				<table class="numTable">
+					<tr><th colspan="2">Průzkum veřejného vygebení</th></tr>
+					<tr><td>základ:  </td><td> {{game.happyBase().withSign()}}</td></tr>
+					<tr><td>populace:</td><td> {{(-game.popTotal()).withSign()}}</td></tr>
+					<tr ng-if="game.happyHospoda() > 0"> <td>pivo:</td>   <td>{{game.happyHospoda().withSign()}}</td></tr>
+					<tr ng-if="game.happyMuzeum() > 0">  <td>muzeum:</td> <td>{{game.happyMuzeum().withSign()}}</td></tr>
+					<tr ng-if="game.happySklad() < 0">   <td>sklad:</td>  <td>{{game.happySklad().withSign()}}</td></tr>
+					<tr ng-if="game.happyPalac() < 0">   <td>palác:</td>  <td>{{game.happyPalac().withSign()}}</td></tr>
+					<tr class="tip" tooltip="celková vygebenost">
+						<td>&sum;</td>
+						<td>{{game.realHappiness().withSign()}}</td>
+					</tr>
+					<tr class="tip" tooltip="růst populace za jeden cyklus, počítá se jako vygebenost / 50">
+						<td>🙂</td>
+						<td>{{game.popGrowth().withSign()}}</td>
+					</tr>
+				</table>
+			</div>
+
+			<div ng-switch-when="advisorArmy" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Strategický přehled</h2>
+				<p>Generál naplánuje všechna slavná vojenská tažení a možná někdy i vyhraje.</p>
+				<battle-management></battle-management>
+				<div class="subTabContainer">
+					<span class="subTab" ng-class="{subTabActive: !ctrl2.generalView}" ng-click="ctrl2.generalView = false">Armáda ve městě</span>
+					<span class="subTab" ng-class="{subTabActive: ctrl2.generalView}" ng-click="ctrl2.generalView = true">Záznamy bitev</span>
+				</div>
+				<div ng-show="!ctrl2.generalView">
+					<p>
+						<span class="tip" tooltip="násobí útok všech našich jednotek">Síla armády: {{game.eff().power.toPercent()}}</span>,
+						<span class="tip" tooltip="násobí vydrancované suroviny">účinnost drancování: {{game.eff().dranc.toPercent()}}</span>
+					</p>
+					<p ng-if="armySum(s.army) === 0 && s.odys.wave === 0">
+						Nemáme vůbec žádnou armádu.. Naše město je zcela nechráněno a může se tedy stát, že nebudeme moci dobývat nepřátele, plenit a loupit!<br>
+						Tak honem do kasárny, uděláme občanům pořádnou vojnu.
+					</p>
+					<p ng-if="armySum(s.army) === 0 && s.odys.wave > 0">
+						Naše veškerá armáda vyplula na dřevěných lodicích v širá moře vstříc neznámým dobrodružstvím, a ve měste vůbec nikdo nezbyl.<br>
+						Tak honem do kasárny, ať se dostane i na ostatní občany.
+					</p>
+					<table class="compactTable">
+						<tr ng-repeat="(i,n) in s.army" ng-if="n > 0">
+							<td><img ng-src="res\unit\{{units[i].img}}"></td>
+							<td><p>
+								<b>{{units[i].name}} ({{n}} ks)</b><br>
+								{{units[i].flavor + extraFlavor(i)}}<br>
+								Útok: {{units[i].apparentAtt ? units[i].apparentAtt() : units[i].att}}, výdrž: {{units[i].hp}}
+							</p></td>
+						</tr>
+					</table>
+				</div>
+				<battle-reports ng-show="ctrl2.generalView"></battle-reports>
+			</div>
+
+			<div ng-switch-when="advisorScience" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Výzkumný přehled</h2>
+				<p>Vědec vám vynalezne nejrůznější technologie – užitečná hnojiva i šílené rovnice!</p>
+				<p ng-if="!isAllWis()">
+					Počet výzkumných bodů: 💡{{s.WP.addk(1e7, 1e7)}}<br>
+					<span class="tip" tooltip="počet výzkumných bodů za jeden cyklus">Rychlost výzkumu: {{game.rateWP()}}</span>
+				</p>
+				<div ng-repeat="g in WPgroups" ng-if="!isAllWis()">
+					<p><b>{{WPgroupNames[$index]}}</b></p>
+					<div ng-repeat="w in getAvailableWis(g)" style="padding-left: 20px;">
+						<p><a class="fakeLink" ng-click="game.buyResearch(w)">{{w.name}}</a> 💡{{w.cost}}<br>
+						{{w.teaser}}</p>
+					</div>
+				</div>
+				<div ng-if="s.p.unlockDoge" style="padding-left: 5px" class="clickImg" ng-click="dogeClic()">
+					<img ng-src="{{dogeSRC()}}" ng-style="{transform: 'scaleY('+(s.p.unlockDoge%2*2-1)+')'}">
+				</div>
+			</div>
+
+		<!-- CITY SCREEN TABS -->
+			<div ng-switch-when="radnice" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p><b>Přehled města {{s.name}}:</b> <a ng-click="renameCity()" class="fakeLink">přejmenovat</a></p>
+				<p>
+					<p><span class="tip" tooltip="celková populace včetně dělníků">
+						Populace: {{game.popTotal()}}
+					</span></p>
+					<p><span class="tip" tooltip="volná místa na záchodech radnice" ng-class="{thisIsBad: game.popLimit() <= game.popTotal()}">
+						Populační limit: {{game.popLimit()}}
+					</span></p>
+					<p><span class="tip" tooltip="míra vytlemenosti obyvatel, určuje růst populace">
+						Vygebenost: {{game.realHappiness()}}
+					</span></p>
+					<p><span class="tip" tooltip="růst populace za jeden cyklus, počítá se jako vygebenost / 50" ng-class="{thisIsBad: game.popGrowth() < 0}">
+						Růst populace: {{game.popGrowth().withSign()}}
+					</span></p>
+					<p>Od založení města dne {{getFoundationDate()}} uplynulo {{s.iteration}} cyklů.</p>
+				</p>
+			</div>
+
+			<div ng-switch-when="skola" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p>
+					Škola vytváří výzkumné body, výzkumy se pak kupují v okně vědce<br>
+					Počet výzkumných bodů: 💡{{s.WP.addk(1e7, 1e7)}}<br>
+					<span class="tip" tooltip="počet výzkumných bodů za jeden cyklus">Rychlost získávání bodů:
+					{{demMulti([game.rateWP()/game.eff().skola], [game.eff().skola]) }}</span>
+				</p>
+				<hr ng-if="s.research.length >= consts.researchArchiveMin">
+				<p ng-if="s.research.length >= consts.researchArchiveMin">
+					Ve školním kabinetu archivujeme všechny domácí úkoly, rukodělné výrobky, písemky atd. Je to tedy databáze inovativního know-how, které nadaní žáci vytvořili pod vedením našeho vědce.
+					<input type="button" ng-click="tab('researchArchive')" value="Navštívit kabinet">
+				</p>
+			</div>
+
+			<div ng-switch-when="researchArchive" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Školní kabinet</h2>
+				<research-archive></research-archive>
+			</div>
+
+			<div ng-switch-when="pristav" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<trade-slider></trade-slider>
+			</div>
+
+			<div ng-switch-when="kasarna" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<training building="'kasarna'"></training>
+			</div>
+
+			<div ng-switch-when="sklad" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p>Kapacita surovin (kromě zlata):</p>
+					<table class="numTable">
+					<tr><td>Základ</td><td>{{consts.baseSklad}}</td></tr>
+					<tr><td>Sklad</td><td>{{game.storage() - consts.baseSklad}}</td></tr>
+					<tr><td>&sum;</td><td>{{game.storage()}}</td></tr>
+					</table>
+				<p>Občanům se však tato úžasná hospodářská struktura oškliví, což vyjadřují -50 vygebeností za každou úroveň.</p>
+			</div>
+
+			<div ng-switch-when="hospoda" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p>
+					Rozšíření zahrádky, baru a posílení obsluhy nám umožňuje zvýšit pravidelný příděl piva, přičemž každá úroveň přídělu piva vygebí obyvatelstvo o 150.
+				</p><p>
+					<img src="res/GUI/icon_pivo.png">&nbsp;
+					<input type="range" class="distributeSlider" step="1" min="0" max="{{game.getBlvl('hospoda')}}" ng-model="getSetBeer" ng-model-options="{getterSetter: true}">
+				</p><p>
+					Nastavený příděl: <b>{{game.pridelHospoda()}}</b><br>
+					Bonus vygebenosti: +{{game.happyHospoda()}}<br>
+					Celková vygebenost: {{game.realHappiness()}}
+				</p>
+				<div ng-if="s.p.unlockOktoberfest" style="text-align: center;">
+					<div style="height: 50px"></div>
+					<p class="strong">Oktoberfest, čili slavnost piva v září</p>
+					<p>
+						Způsobí krátkodobé, leč velice intenzivní vygebení.</p><p>
+						Společnost si však získává toleranci, takže je třeba aplikovat stále větší dávky,<br>a nebo delší dobu počkat, aby se z toho játra opět vzpamatovala.
+					</p>
+					<p>
+						<img src="res/GUI/icon_pivo.png" width="16" height="16"> {{(consts.oktoberfest.base * s.oktoberfest).toFixed(0)}}
+						<input type="button" ng-click="game.oktoberfest()" value="Zahájit">
+					</p>
+				</div>
+			</div>
+
+			<div ng-switch-when="dilna" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<training building="'dilna'"></training>
+			</div>
+
+			<div ng-switch-when="zkusebna" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<training building="'zkusebna'"></training>
+				<div ng-if="s.p.unlockNuke" style="text-align: center;">
+					<div style="height: 30px"></div>
+					<p><span class="strong">Novoroční ohňostroj</span> <span style="font-size: 40px">☢</span></p>
+					<div ng-if="s.ownNuke">
+						<p>Rachejtle jsou připraveny a bezpečně uloženy.</p>
+						<p>Nejlepší bude odpálit je během probíhající bitvy, aby ani sousedé nepřišli o tuto velkolepou podívanou! <i>(v okně generála nebo nepřátelské vesnice)</i></p>
+						<p ng-if="s.p.unlockOdysseia">Nebo je může naše čacká družina odvézt na "zkulturnění" exotických krajů.<br><i>Pak odpálit v okně generála nebo na odyseji</i></p>
+					</div>
+
+					<div ng-if="!s.ownNuke && s.nukeCooldown > 0">
+						<p>Ohňostroj byl nedávno využit a než budeme moci koupit další, bude třeba uklidit všechny ty sýrou smrdící doutnající odpadky.</p>
+						<p>Úklid bude trvat ještě {{s.nukeCooldown}} cyklů (vylepšením zkušebny se čekací doba zkrátí)</p>
+					</div>
+
+					<div ng-if="!s.ownNuke && s.nukeCooldown === 0">
+						<p>Zde můžeme zakoupit ohňostroj na různé, ehm, oslavy. Bude to velmi zábavné!</p>
+						<p>
+							<img src="res/GUI/icon_zlato.png" width="16" height="16"> {{consts.nukePrice[0]}}
+							<img src="res/GUI/icon_syra.png" width="16" height="16">  {{consts.nukePrice[3]}}
+							<input type="button" ng-click="game.buyNuke()" value="Koupit">
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div ng-switch-when="palac" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p>S každou úrovní paláce se mi žije o dost lépe a naše říše je mocnější.</p>
+				<p>Účinky každé úrovně:
+					<ul>
+						<li>+10% výběr daní</li>
+						<li>+10% těžba dřeva</li>
+						<li>+5% těžba kamení, sýry a piva</li>
+						<li>+5% síla armády</li>
+						<li>-5% údržba města</li>
+						<li>-5% plat dělníků</li>
+						<li>-100 vygebenost</li>
+					</ul>
+				</p>
+			</div>
+
+			<div ng-switch-when="muzeum" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<hr>
+				<p>Muzeum zlepšuje dopravní obslužnost města, což obyvatelé přijímají s povděkem a ocení to zvýšením své vygebenosti o 100 za každou úroveň.</p>
+				<div ng-if="s.odys.relics.length > 0">
+					<p>Protože je tohle sklepení jinak dost nevyužité, můžeme tady třeba uskladnit různé suvenýry, co jsme přitáhli z našich válečných expedic do odlehlých dálav:</p>
+					<img class="relic buildOption" ng-repeat="r in s.odys.relics" ng-src="res/relics/{{relics[r].img}}" ng-mouseover="ctrl2.relicSelect=r" ng-mouseleave="ctrl2.relicSelect=false" ng-click="relicClick(r)">
+					<div ng-if="ctrl2.relicSelect" style="text-align: center">
+						<p><b>{{relics[ctrl2.relicSelect].name}}</b></p>
+						<p>{{relics[ctrl2.relicSelect].flavor}}</p>
+						<p>→ {{relics[ctrl2.relicSelect].effect}}</p>
+					</div>
+				</div>
+			</div>
+
+			<div ng-switch-when="kostel" ng-style="screenStyle()">
+				<escape></escape>
+				<building-details key="ctrl.tab"></building-details>
+				<p>
+					Úroveň kostela zesiluje efekt zázraků a snižuje dobu čekání na další rituál.<br>
+					Získaný zázrak je ovšem vždy náhodný, někdy pozitivní, někdy negativní.
+				</p>
+				<hr>
+				<div ng-if="s.mirCountdown > 0">
+					<p><b>{{miracles[s.miracle].name}}</b>, nad námi bude opatrovat ještě {{s.mirCountdown}} cyklů.</p>
+					<p>{{miracles[s.miracle].flavor}}</p>
+					<p>→ {{miracles[s.miracle].description(game.getBlvl('kostel')+consts.rel.necro*game.hasRelic('necro'))}}</p>
+				</div>
+
+				<div ng-if="s.mirCountdown === 0 && s.mirCooldown > 0">
+					<p class="strong">Provést oběť bohům</p>
+					<p>Naši kněží jsou zcela vyčerpání po zvrácených satanistických orgiích 😈<br>
+					Bude trvat ještě {{s.mirCooldown}} cyklů, než se budeme moci opět účinně rouhat.</p>
+				</div>
+
+				<div ng-if="s.mirCountdown === 0 && s.mirCooldown === 0" style="text-align: center;">
+					<p class="strong">Provést oběť bohům</p>
+					<p>🙂 {{consts.mirPrice.pop}} <img src="res/GUI/icon_zlato.png" width="16" height="16"> {{consts.mirPrice.zlato}}</p>
+					<img src="res/GUI/darkritual.png" class="clickImg" id="darkritual" ng-click="game.darkRitual()">
+				</div>
+			</div>
+
+		<!-- ISLAND SCREEN TABS -->
+			<div ng-switch-when="islandPila" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Pila</h2>
+				<p>Možná to mnohé překvapí, ale tento neobvyklý průmyslový areál ve skutečnosti slouží ke zpracování pokácených stromů na prkna.</p>
+				<resource-slider i="1"></resource-slider>
+			</div>
+
+			<div ng-switch-when="islandKamen" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Pláž</h2>
+				<p>Kamenitá pláž, kde můžeme sbírat oblázky na dekoraci městských staveb. Možná by se šutry daly i těžit ze skály, ale to by dalo moc práce.</p>
+				<resource-slider i="2"></resource-slider>
+			</div>
+
+			<div ng-switch-when="islandSyra" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Kravín</h2>
+				<p>Prosluněná louka se svěží trávou, kde se pasou krávy. Můžeme z nich dojit čerstvou sýru pro naše válečné operace.</p>
+				<resource-slider i="3"></resource-slider>
+			</div>
+
+			<div ng-switch-when="islandPivo" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Pivní plošina</h2>
+				<p>Hlubokým vrtem se zde těží pivní vrstva ležící pod mořským dnem.
+				Ta dle pověstí vznikla, když Zeus jednou přišel domů nakalený jak prase a Héru tak vytočil, že mu všechny sudy s pivem skopla z Olympu až do moře.
+				Po těch letech je z toho sice hnusná břečka, ale nějaký alkohol v tom je, takže to lidé rádi vychlastaj.</p>
+				<resource-slider i="4"></resource-slider>
+			</div>
+
+			<div ng-switch-when="islandPolis" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Polis</h2>
+				<p>Nepřátelská vesnice, která jistě skrývá ohromné bohatství zralé k uloupení!</p>
+				<!-- no can do, is odysseia lobby/battle -->
+				<p ng-if="s.odys.wave > 0">
+					Avšak nemůžeme přeci vyvolávat malicherné sousedské šarvátky, zatímco naši hrdinové trpí kdesi za sedmero moři!
+					Asi je to pořád lepší než uspořádat párty pro ženichy ucházející se o jejich manželky, ale stejně, trošku respektu...
+				</p>
+				<!-- can start, is peace -->
+				<div ng-if="!s.battlefield && s.odys.wave === 0">
+					<p class="strong" ng-click="game.war.initBattle('polis')">⚔️ <a class="fakeLink">Zaútočit</a> (úroveň {{s.enemyLevel+1}})</p>
+					<p></p>
+					<p></p>
+					<p class="fakeLink tip" ng-click="tab('battleTutorial')" style="font-size: 13px;">Jak bojovat?</p>
+				</div>
+				<!-- is polis battle -->
+				<battle-management type="polis"></battle-management>
+			</div>
+
+			<div ng-switch-when="islandOdysseia" ng-style="screenStyle()">
+				<escape></escape>
+				<h2>Odysseia</h2>
+				<p>Naše lodě se díky hexametrickému pohonu dostanou za hranice známého světa do krajin mytických, kde na nás jistě čekají poklady o jakých se nám ani nesnilo!</p>
+				<!-- no can do, is polis battle -->
+				<p ng-if="s.battlefield && s.odys.wave === 0">Avšak nemůžeme přeci posílat vojáky na nějaký nesmyslný výlet do zámoří, zatímco doma nám zuří totální válka!</p>
+				<!-- can start, is peace -->
+				<p ng-if="!s.battlefield && s.odys.wave === 0" class="strong" ng-click="game.war.advanceOdys()" tooltip="Pozor, naše armáda tam nejspíše heroicky zhyne tragickou smrtí!">⚓ <a class="fakeLink">Vydat se na Odysseu</a></p>
+				<!-- is odysseia lobby -->
+				<div ng-if="!s.battlefield && s.odys.wave > 0 && !odysDraw()">
+					<p>Naši hrdinové přečkali nástrahy {{s.odys.wave-1}}. ostrova a celkem vymlátili epické skóre {{s.odys.score}}</p>
+					<p>Pomocí palubní palác-antény nám hlasí, že další ostrov obývají {{odyssets[s.odys.race].name}}.
+					Naše družina jen čeká na pokyn k dalšímu vylodění!</p>
+					<p ng-if="s.odys.ownNuke">☢ Stále s sebou vezou novoroční ohňostroj <i>pro tu perfektní kulturní příležitost...</i></p>
+					<p ng-if="s.odys.wave > consts.odys.retreatWave">Vojáci už se velice dlouho vlekou od ostrova k ostrovu. Jsou vyčerpaní, zubožení a hlavně obtížení skvostnou kořistí!
+						Vládce rybníků se nad nimi snad smiluje, když mu obětují {{consts.odys.retreatribute.toPercent()}} ze svého tučného lupu, a umožní jim bezpečný návrat domů.</p>
+					<p class="strong">⚓ <a class="fakeLink"  ng-click="game.war.advanceOdys()">Pokračovat v Odyssei</a></p>
+					<p ng-if="s.odys.wave > consts.odys.retreatWave">🏳️&nbsp;&nbsp;&nbsp;<a class="fakeLink" ng-click="game.war.loseOdys(true, true)">Návrat domů</a></p>
+				</div>
+				<!-- retreat is possible when battle ends up as a draw (extremely rare occurence!!), then it ends honorably w/o the retreat penalty -->
+				<div ng-if="!s.battlefield && s.odys.wave > 0 && odysDraw()">
+					<p>Naši hrdinové zvítězili na {{s.odys.wave-1}}. ostrově, avšak nezbyl přitom ani jediný naživu.<br>Bohové vám gratulují, to se moc často nestává!</p>
+					<p>🏳️&nbsp;&nbsp;&nbsp;<a class="fakeLink" ng-click="game.war.loseOdys(true, false)">Prohlásit odysseu za ukončenou</a></p>
+				</div>
+				<!-- is odysseia battle -->
+				<battle-management type="odys"></battle-management>
+				<p ng-if="s.p.unlockAutoodys">Pokračovat automaticky na další ostrov <input type="checkbox" ng-model="ctrl.autoodys"></p>
+			</div>
+
+			<div ng-switch-when="battleTutorial" ng-style="screenStyle()">
+				<escape></escape>
+				<div ng-include="'app/ng/battleTutorial.html'"></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div id="footer" ng-style="style.footer">
+	Vytvořil <a href="http://jira.zby.cz/">Jiří Zbytovský</a> v letech 2019-2022 za použití <a href="https://angularjs.org/" target="_blank">AngularJS</a><br>
+	Za pomoc s grafikou děkuji Martinu Machovi
+</div>
+
+<a id="githubLogo" href="https://github.com/Lemonexe/ukradyjam-hd" target="_blank" title="github"><img src="res/GitHub-Mark-32px.png"></a>
+	</body>
+</html>

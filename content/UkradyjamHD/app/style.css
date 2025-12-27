@@ -1,0 +1,298 @@
+/*
+	THIS IS THE ONLY CSS FILE
+However, there are some inline definitions in index.html and yes, I do feel ashamed.
+Colors that are used here:
+	#ffeedd a very light beige - BODY BACKGROUND
+	#eeddaa slightly darker beige - for MAIN PANEL BACKGROUND
+	#998855 brown - BORDERS AND LINES
+	#ccbb88 lighter brown - SELECTED item background (on hover)
+	#880000 dark red - font color for WARNING
+	#551a8b purple - mimics the standard link appearance
+*/
+
+/* ELEMENTS */
+body {
+	background-color: #ffeedd;
+	padding-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+img {
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+h1 {
+	margin: 15px;
+	font-size: 32px;
+	text-align: center;
+}
+h2 {
+	margin: 10px;
+	font-size: 24px;
+	text-align: center;
+}
+p {
+	margin: 0px;
+	padding: 5px;
+}
+ul {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 30px;
+}
+li {margin-bottom: 10px;}
+input[type=button] {cursor: pointer;}
+
+/*Slider – unfortunately it's quite a pain!*/
+input[type=range] {
+	height: 24px;
+	background-color: transparent;
+	-webkit-appearance: none;
+}
+input[type=range]:focus {outline: none;}
+/*chromium*/
+input[type=range]::-webkit-slider-runnable-track {
+	height: 4px;
+	background: #998855;
+	cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+	margin-top: -10px;
+	width: 13px;
+	height: 24px;
+	background: #ffeedd;
+	border: 2px solid #998855;
+	border-radius: 2px;
+	cursor: pointer;
+	-webkit-appearance: none;
+}
+/*firefox*/
+input[type=range]::-moz-range-track {
+	height: 4px;
+	background: #998855;
+	cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+	width: 9px;
+	height: 20px;
+	background: #ffeedd;
+	border: 2px solid #998855;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+hr {
+	width: 85%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: none;
+	border-top: 1px solid #998855;
+}
+td {
+	vertical-align: top;
+}
+
+
+/* CLASS */
+.popup {
+	z-index: 3;
+	position: absolute;
+	width: 440px;
+	border: 5px outset #998855;
+	background-color: #eeddaa;
+	opacity: 0.95;
+	text-align: justify;
+	font-size: 18px;
+}
+.switch {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+}
+.fakeLink {
+	color: #551a8b;
+	cursor: pointer;
+	text-decoration: underline;
+}
+.fakeButton {
+	cursor: pointer;
+	font: 400 13px Arial;
+	padding: 2px 8px;
+	user-select: none;
+	background-color: buttonface;
+	border-color: buttonface;
+	border-width: 2px;
+	border-style: outset;
+};
+.windows {
+	border: 4px solid #998855;
+	background-color: #eeddaa;
+}
+.escape {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	background-color: #998855;
+	font-size: 40px;
+	cursor: pointer;
+}
+.strong {
+	font-weight: bold;
+	font-size: 20px;
+}
+.numTable {margin: 20px;}
+.numTable td:first-child {
+	text-align: right;
+	padding-right: 10px;
+}
+table.compactTable td {padding: 0px; margin: 0px;}
+table.compactTable p {padding-right: 0px;}
+.subTabContainer {
+	margin: 10px; margin-left: 20px; margin-right: 20px;
+	border-bottom: 2px solid #998855;
+	text-align: center;
+}
+.subTab {
+	position: relative; top: 0.5px;
+	padding: 2px;
+	padding-left: 6px; padding-right: 6px;
+	border: 2px solid #998855;
+	border-bottom: none;
+	font-size: 18px;
+	color: #885533;
+}
+.subTabActive {background-color: #eeddaa;}
+.thisIsBad {
+	font-weight: bold;
+	color: #880000;
+	animation: blinker 1s linear infinite;
+}
+.relic {margin: 7px;}
+.clickImg {cursor: pointer;}
+.building {cursor: move;}
+.tip {cursor: help;}
+.buildOption:hover {background-color: #ccbb88;}
+.distributeSlider {width: 400px;}
+.secret {font-style: italic;}
+.hidden {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+}
+
+/* ID */
+#tooltip {
+	position: absolute;
+	z-index: 4;
+	background-color: #ffeedd;
+	border: 1px solid #998855;
+	padding: 1px 4px 1px 4px;
+	box-shadow: 1px 1px 3px black;
+	font-size: 13px;
+	color: #333333;
+	animation: appear 0.3s linear forwards;
+}
+#header {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	padding-top: 3px;
+	text-align: center;
+}
+#header > a {
+	display: inline-block;
+	width: 120px;
+}
+#footer {
+	position: absolute;
+	/*top nastaveno dynamicky*/
+	left: 0px;
+	width: 100%;
+	text-align: center;
+}
+#githubLogo {
+	position: fixed; bottom: 0px; right: 0px;
+	margin-right: 4px;
+}
+#gameContainer {
+	position: absolute;
+	top: 25px;
+	background-color: #eeddaa;
+	border: 4px solid #998855;
+}
+#topBar {
+	height: 64px;
+	border-bottom: 4px solid #998855;
+}
+#screen {position: absolute;}
+#screen > div {
+	overflow-y: auto;
+	background-size: contain;
+}
+#suroviny {
+	position: absolute;
+	left: 0px;
+	/*max-width: 390px; dynamicky*/
+}
+#suroviny > div {
+	float: left;
+	height: 30px
+}
+#assistents {
+	position: absolute;
+	right: 0px;
+}
+#buildingList {
+	z-index: 2;
+	position: relative;
+	max-width: 540px;
+	/*max-height: 485px; dynamicky*/
+	margin-left: 5px;
+	background-color: #eeddaa;
+	border: 2px solid #998855;
+	overflow: auto;
+}
+#achievements {
+	overflow-y: auto;
+}
+#darkritual {
+	margin: 3px;
+	padding: 12px;
+}
+#darkritual:hover {
+	animation: shiver 0.2s linear infinite, darken 3s linear forwards;
+	margin: 0px;
+	border: 3px solid #660000;
+}
+#nukeEffect {
+	position: absolute;
+	top: 0px; left: 0px;
+	background-color: white;
+	animation: whiteflash 4s linear forwards;
+}
+@keyframes blinker {
+	50% {opacity: 0;}
+}
+@keyframes appear {
+	0%   {opacity: 0;}
+	50%  {opacity: 0;}
+	100% {opacity: 1;}
+}
+@keyframes shiver {
+	20% {transform: translate(1px, 1px);}
+	40% {transform: translate(1px, -1px);}
+	60% {transform: translate(-1px, 1px);}
+	80% {transform: translate(-1px, -1px);}
+}
+@keyframes darken {
+	100% {background-color: #660000;}
+}
+@keyframes whiteflash {
+	0%   {opacity: 0;}
+	10%  {opacity: 1;}
+	25%  {opacity: 1;}
+	100% {opacity: 0;}
+}

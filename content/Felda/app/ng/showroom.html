@@ -1,0 +1,103 @@
+<div class="tabSwitchContainer" style="width: 370px; padding-left: 80px">
+	<tab control="showroom.tab" value="general" ng-click="drawPlot()">Obecné</tab>
+	<tab control="showroom.tab" value="engine" ng-click="drawPlot()">Motor</tab>
+	<tab control="showroom.tab" value="transmission" ng-click="drawPlot()">Převodovka</tab>
+</div>
+
+<div style="position: relative">
+<!-- LEFT PANELS -->
+	<div class="showroomLeftPanel" ng-show="showroom.tab === 'general'">
+		<h3>Obecné</h3>
+
+		<table class="showroomTable">
+			<tr><td>Hmotnost:</td><td>{{showroom.car.m.toFixed()}} kg</td></tr>
+			<tr><td>Délka:</td><td>{{(showroom.car.graphic.width*1000).toFixed()}} mm</td></tr>
+			<tr><td>Výška:</td><td>{{(showroom.car.graphic.height*1000).toFixed()}} mm</td></tr>
+			<tr><td>Průměr kol:</td><td>{{(showroom.car.graphic.r*1000).toFixed()}} mm</td></tr>
+		</table>
+
+		<p ng-repeat="line in showroom.car.description">{{line}}</p>
+	</div>
+
+	<div class="showroomLeftPanel" ng-show="showroom.tab === 'engine'">
+		<h3>Motor</h3>
+
+		<table class="showroomTable">
+			<tr><td>Konstrukce motoru:</td><td colspan="2">{{showroom.engineType}}</td></tr>
+			<tr><td>Zdvihový objem:</td><td>{{showroom.car.engine.V.toFixed(3)}} l</td></tr>
+			<tr tooltip="tato hodnota je vycucána z prstu"><td>Moment setrvačnosti:</td><td>{{showroom.car.engine.I.toFixed(2)}} kg·m²</td></tr>
+			<tr><td>Max. výkon:</td><td>{{st.calculateUnit(showroom.Pmax, CS.unitPow)}}</td><td>@ {{(showroom.Pmaxf*60).toFixed()}} RPM</td></tr>
+			<tr><td>Max. točivý moment:</td><td>{{showroom.Tmax.toFixed()}} N·m</td><td>@ {{(showroom.Tmaxf*60).toFixed()}} RPM</td></tr>
+		</table>
+
+		<p>
+			Plyn:
+			<input type="range" style="width: 200px" min="0.25" max="1" step="0.01" ng-model="showroom.gas" ng-change="preparePerformancePlot(); drawPlot()">
+			{{showroom.gas.toPercent()}}
+		</p>
+
+		<p>
+			Graf vpravo vyjadřuje závislost výkonu (červená) a točivého momentu (modrá) na otáčkách motoru.
+			Ve výchozím stavu graf ukazuje charakteristiky za plného plynu, posuvníkem můžete plyn změnit.
+		</p>
+	</div>
+
+	<div class="showroomLeftPanel" ng-show="showroom.tab === 'transmission'">
+		<h3>Převodovka apod.</h3>
+
+		<table class="showroomTable">
+			<tr tooltip="tato hodnota je vycucána z prstu"><td>Max. kapacita spojky:</td><td>{{showroom.car.transmission.TclutchMax.toFixed()}} N·m</td></tr>
+			<tr tooltip="tato hodnota je vycucána z prstu"><td>Koeficient tření brzd:</td><td>{{showroom.car.transmission.friction.toFixed(1)}}</td></tr>
+			<tr><td>Max. rychlost:</td><td>{{st.calculateUnit(showroom.vmax, CS.unitVel)}} <span ng-if="showroom.vmax > 0">(převod {{showroom.vmaxg}})</span></td></tr>
+			<tr tooltip="tato funkce je určena korelací">
+				<td>Odporové síly na auto:</td><td>F = {{showroom.car.transmission.loss.a.toFixed(0)}} + {{showroom.car.transmission.loss.b.toFixed(2)}}·v<sup>2</sup></td>
+			</tr>
+		</table>
+
+		<p><u>Převody:</u></p>
+		<table class="showroomTable">
+			<tr ng-repeat="(key, value) in showroom.car.transmission.gears" ng-if="key !== 'fix'">
+				<td>{{key}}:</td>
+				<td>{{value.toFixed(3)}}</td>
+				<td>
+					<input type="checkbox" ng-model="showroom.gears[key]" ng-change="prepareVelocityPlot(); drawPlot()">
+					<span class="littleSquare" ng-style="{backgroundColor: showroom.colors[key]}"></span>
+				</td>
+			</tr>
+			<tr tooltip="tímto převodem se násobí všechny ostatní"><td>fixní</td><td>{{showroom.car.transmission.gears.fix.toFixed(3)}}</td></tr>
+		</table>
+
+		<table>
+			<tr>
+				<td>Stoupání:</td>
+				<td><input type="range" style="width: 200px" min="-30" max="30" step="1" ng-model="showroom.slope" ng-change="prepareVelocityPlot(); drawPlot()">
+				{{showroom.slope.toFixed(0)}}°</td>
+			</tr>
+			<tr>
+				<td>Výška:</td>
+				<td><input type="range" style="width: 200px" min="0" max="3500" step="100" ng-model="showroom.altitude" ng-change="prepareVelocityPlot(); drawPlot()">
+				{{showroom.altitude.toFixed(0)}} m, {{getPressure().toFixed(1)}} kPa</td>
+			</tr>
+		</table>
+
+		<p>
+			Graf vyjadřuje závislost sil na rychlosti. Černá křivka je síla odporová + gravitační,
+			zatímco barevné křivky jsou síly, kterými motor působí na auto skrze jednotlivé převody (lze vybrat v seznamu).
+			Síly lze modifikovat změnou sklonu či nadmořské výšky (mění barometrický tlak)
+		</p><p>
+			Pokud je křivka převodu pod černou křivkou, motor to prostě neutáhne! Průsečík tedy ukazuje maximální rychlost pro daný převod.
+		</p>
+	</div>
+
+<!-- RIGHT PANELS -->
+	<div class="showroomRightPanel" ng-show="showroom.tab === 'general'" style="top: -60px">
+		<div style="position: relative">
+			<img ng-src="{{showroom.img.src}}" ng-style="showroom.carStyle">
+			<img ng-src="{{showroom.imgWH.src}}" ng-repeat="w in showroom.wheelStyles" ng-style="w">
+		</div>
+	</div>
+
+	<div class="showroomRightPanel" ng-show="showroom.tab === 'engine' || showroom.tab === 'transmission'" style="top: -90px">
+		<canvas id="plot" width="600" height="600" ng-init="drawPlot()"></canvas>
+	</div>
+</div>

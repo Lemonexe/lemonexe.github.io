@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="generator" content="PSPad editor, www.pspad.com">
+<title>PWN tutorial</title>
+<style>
+#kopyrajt{
+  position: fixed;
+  bottom: 0px;
+  left: 50px;
+  background-color: green;
+}
+</style>
+<script>
+divy=["vyberRasy","pwniKroky","radyTipy","necyklopedie"];
+function zobraz(co){
+for(i in divy){
+  document.getElementById(divy[i]).style.display="none";
+}
+  document.getElementById(co).style.display="block";
+}
+</script>
+</head>
+<body>
+<div style="position:fixed;top:0px;left:0px;width:100%;background-color:rgb(240,255,240);">
+  <span style="font-size:32px;">
+    <span style="color:gray;">MENU:</span><a onClick="zobraz('vyberRasy');">Výběr rasy</a> | 
+    <a onClick="zobraz('pwniKroky');">Pwní kroky</a> | 
+    <a onClick="zobraz('radyTipy');">Rady a tipy</a> | 
+    <a onClick="zobraz('necyklopedie');">Pwnopedia</a> | 
+    <a onClick="location.href='game.php';" style="color:red;">I'M READY, LET'S PWN!!!</a>
+  </span>
+  <hr><hr><hr>
+</div>
+<br><br><br>
+<div id="vyberRasy" style="display:block;">
+  <h1>Výběr rasy</h1>
+  Tak začneme s hrou. <a href="game.html" onClick="window.setTimeout('window.focus()',1500);" target="_blank">Tady</a>. Uvidíte tam ukázky různých ras. Jsou tu:
+  <ul><li>Člověk (modrý)</li>
+  <li>Elf (zelený)</li>
+  <li>Ork (červený)</li>
+  </ul>
+  Každá má nějaké výhody:<br>
+  Člověk nosí jednoruční a štíty, je tedy obranný typ a hodně vydrží.<br>
+  Elf nosí luky, může střílet hned jak příšeru uvidí.<br>
+  Ork nosí obouruční či dvojité zbraně. Je to hlavně nasraný berserker, ale také dost vydží<br>
+  Tak si nějakou zvolte a čtěte další sekci.<br>
+  <br>
+  <u>Tohle už nemusíte nutně číst:</u><br>
+  Jsou tu 4 staty: Útočné strength a accuracy, Obranné evasion a defense<br>
+  Tady je tabulka začátečních hodnot:<br>
+  <table border="1">
+  <tr><td>PWN</td><td>Strength</td><td>Accuracy</td><td>Evasion</td><td>Defense</td></tr>
+  <tr><td>Člověk</td><td>20</td><td>10</td><td>10</td><td>10</td></tr>
+  <tr><td>Elf</td><td>10</td><td>15</td><td>15</td><td>10</td></tr>
+  <tr><td>Ork</td><td>10</td><td>10</td><td>10</td><td>20</td></tr>
+  </table><br><br>
+  Ale tím rozdíly nekončí. Tohle jsou poměry efektivity skilování (trénování):<br>
+  To znamená, že když například člověk dá statpoint do síly, zvýší se síla o 3. U elfa o 4 a u skřeta dokonce o 5!<br>
+  <table border="1">
+  <tr><td>PWN</td><td>Strength</td><td>Accuracy</td><td>Evasion</td><td>Defense</td></tr>
+  <tr><td>Člověk</td><td>3</td><td>4</td><td>3</td><td>5</td></tr>
+  <tr><td>Elf</td><td>4</td><td>5</td><td>4</td><td>2</td></tr>
+  <tr><td>Ork</td><td>5</td><td>3</td><td>3</td><td>4</td></tr>
+  </table>
+</div>
+
+<div id="pwniKroky" style="display:none">
+  <h1>Pwní kroky</h1>
+  Pokud jste ještě nevybrali svou postavu, učiňte tak. Vaše postava se nachází nahoře vlevo.<br>
+  OVLÁDÁNÍ - WSAD nebo ŠIPKY<br>
+  Údolí vede na sever a pak na východ, bežte tedy nahoru (W).<br>
+  Na východ od vás se nachází slepice, tak se ukažte, jak jste naskillování, ale ještě počkejte.<br>
+  KUCHÁNÍ - ENTER<br>
+  Až začne boj, slepice k vám půjde. S elfem z ní můžete ihned udělat jehelníček ostatní počkají, až k vám dojde. PWNIT!! (D)<br>
+  Nahoře veprostřed se vám napsalo, co jste vydropli (šedý panel). Běžte teď na východ - posbírejte těch 6 věcí.<br>
+  INVENTÁŘ - I<br>
+  Tam máte zobrazené, kolik máte místní měny - glodů. A dále všechny předměty, co máte. Když na ně najedete, zobrazí se informace.<br>
+  Když na ně kliknete, tak si je nasadíte nebo sníte, prostě použijete.<br>
+  Samozřejmě, že můžete nosti pouze zbraně vašeho typu. U brnění je to jedno<br>
+  STATY - B<br>
+  Tak tady máte ten svůj slavný char. Máte tady dvě tlačítka - staty a skilly.<br>
+  <ul><li>Ve statech máte vaše životy, věechny staty. Pokud máte volné statpointy, můžete si je jakkoliv rozdělit (tlačítka Naskilovat)</li>
+  <li>Pokud máte volné skillpojnty, ve skillech si pořiďte speciální schopnosti</li></ul>
+  <h3>Důležité: Nikdy nešturmujte příšeru, co neznáte! Najeďte si na ni myší a zjistíte, co je za třídu.</h3>
+  Seznam tříd:<br>
+  <ul>
+    <li>Class Noob - To vám nemůže ublížit. (Mějte alespoň základní vybavení)</li>
+    <li>Class Low - to dáte i na začátku, ale dávejte dobrý pozor! (Raději mějte vybavení alespoň 2.třídy)</li>
+    <li>Class Loller - Počkejte do levelu tak 5-8. (Mějte vybavení alespoň 3.třídy)</li>
+    <li>Class Skiller - Tohle je síla, mějte dobré vybavení a počkejte do levelu 10-12. (Mějte vybavení alespoň 4.třídy)</li>
+    <li>Class Ownage - Na to choďte jen se špičkovým vybavením a levelem tak 20. (Mějte vybavení alespoň 5.třídy)</li>
+    <li>Class Pwned - Na to ani nechoďte! (Nebo mějte vybavení 6.třídy či nějaké vybugované)</li>
+  </ul>
+  <br>Tak teď už tě nechám bejt!
+  
+</div>
+
+<div id="radyTipy" style="display:none">
+  <h1>Rady a tipy</h1>
+  <ul>
+    <li>Nikdy nešturmujte příšeru, co neznáte! Najeďte si na ni myší a zjistíte, co je za třídu.</li>
+    <li>První skillpoint dejte do tuhého kořínku. Ten vám dá alespoň malou regeneraci, takže po boji nemusíte plýtvat jablky, nýbrž vaším časem</li>
+    <li>Dávejte statpointy vyrovnaně. Když má elf ratio 2 do defense, ani omylem to neznamená, že ji nepotřebuje. Jen do ní musíte trochu investovat.</li>
+    <li>Přebytečné předměty prodejte v libovolném obchodě, ale raději si nechte jablka.</li>
+  </ul>
+</div>
+
+<div id="necyklopedie" style="display:none">
+  <h1>Pwnopedie</h1>
+  Tady jsou různé tabulky a vzorce!<br><hr>
+  <span style="font-size:24px">Třídy nepřátel</span><br>
+  <ul>
+    <li>Class 1 (Noob) - To vám nemůže ublížit. (Mějte alespoň základní vybavení)</li>
+    <li>Class 2 (Low) - to dáte i na začátku, ale dávejte dobrý pozor! (Raději mějte vybavení alespoň 2.třídy)</li>
+    <li>Class 3 (Loller) - Počkejte do levelu tak 5-8. (Mějte vybavení alespoň 3.třídy)</li>
+    <li>Class 4 (Skiller) - Tohle je síla, mějte dobré vybavení a počkejte do levelu 10-12. (Mějte vybavení alespoň 4.třídy)</li>
+    <li>Class 5 (Ownage) - Na to choďte jen se špičkovým vybavením a levelem tak 20. (Mějte vybavení alespoň 5.třídy)</li>
+    <li>Class 6 (Pwned) - Na to ani nechoďte! (Nebo mějte vybavení 6.třídy či nějaké vybugované)</li>
+  </ul>
+  <br><hr>
+  <span style="font-size:24px">Začáteční staty podle ras</span><br><br>
+  <table border="1">
+  <tr><td>PWN</td><td>Strength</td><td>Accuracy</td><td>Evasion</td><td>Defense</td></tr>
+  <tr><td>Člověk</td><td>20</td><td>10</td><td>10</td><td>10</td></tr>
+  <tr><td>Elf</td><td>10</td><td>15</td><td>15</td><td>10</td></tr>
+  <tr><td>Ork</td><td>10</td><td>10</td><td>10</td><td>20</td></tr>
+  </table>
+  
+  <br><hr>
+  <span style="font-size:24px">Ratia zvyšování statů podle ras</span><br>
+  <table border="1">
+  <tr><td>PWN</td><td>Strength</td><td>Accuracy</td><td>Evasion</td><td>Defense</td></tr>
+  <tr><td>Člověk</td><td>3</td><td>4</td><td>3</td><td>5</td></tr>
+  <tr><td>Elf</td><td>4</td><td>5</td><td>4</td><td>2</td></tr>
+  <tr><td>Ork</td><td>5</td><td>3</td><td>3</td><td>4</td></tr>
+  </table>
+  <br><hr>
+  <span style="font-size:24px">Zbraně - ratia</span><br>
+  To jsou vlastnosti pouze základních zbraní. Zbraně 2. a vyšší třídy mají unikátní názvy a 2 a vícekrát větší attack rating a damage<br>
+  Cena se zvyšuje exponenciálně - 2.třída 10krát, 3.třída 100krát a tak dále. Obrázek zůstává stejný.
+  <table border="1">
+    <tr><td style="background-color:lime">HUMAN</td><td>Attack rating</td><td>Damage</td><td>Cena</td><td>Obrázek</td></tr>
+    <tr><td>Kladivo</td><td>10</td><td>12</td><td>20</td><td><img src="img/inventar/weapons/hammer.png"></td></tr>
+    <tr><td>Meč</td><td>12</td><td>15</td><td>30</td><td><img src="img/inventar/weapons/sword.png"></td></tr>
+    <tr><td>Žezlo</td><td>16</td><td>13</td><td>40</td><td><img src="img/inventar/weapons/zezlo.png"></td></tr>
+  </table><br>
+  <table border="1">
+    <tr><td style="background-color:lime">ELF</td><td>Attack rating</td><td>Damage</td><td>Cena</td><td>Obrázek</td></tr>
+    <tr><td>Krátký luk</td><td>16</td><td>9</td><td>45</td><td><img src="img/inventar/weapons/shortbow.png"></td></tr>
+    <tr><td>Dlouhý luk</td><td>11</td><td>14</td><td>60</td><td><img src="img/inventar/weapons/elfbow.png"></td></tr>
+    <tr><td>Double luk</td><td>20</td><td>10</td><td>90</td><td><img src="img/inventar/weapons/doublebow.png"></td></tr>
+  </table><br>
+  <table border="1">
+    <tr><td style="background-color:lime">ORK</td><td>Attack rating</td><td>Damage</td><td>Cena</td><td>Obrázek</td></tr>
+    <tr><td>Obouruční meč</td><td>22</td><td>25</td><td>40</td><td><img src="img/inventar/weapons/zweihander.png"></td></tr>
+    <tr><td>Sekyry</td><td>16</td><td>32</td><td>50</td><td><img src="img/inventar/weapons/sekyra.png"></td></tr>
+    <tr><td>Palice</td><td>25</td><td>30</td><td>60</td><td><img src="img/inventar/weapons/palice.png"></td></tr>
+  </table>
+  
+  <br><hr>
+  <span style="font-size:24px">Názvy zbraní, brnění a štítů</span><br>
+  <table border="1">
+    <tr>
+      <td><img src="img/inventar/weapons/hammer.png"></td><td><img src="img/inventar/weapons/sword.png"></td><td><img src="img/inventar/weapons/zezlo.png"></td>
+      <td><img src="img/inventar/weapons/shortbow.png"></td><td><img src="img/inventar/weapons/elfbow.png"></td><td><img src="img/inventar/weapons/doublebow.png"></td>
+      <td><img src="img/inventar/weapons/zweihander.png"></td><td><img src="img/inventar/weapons/sekyra.png"></td><td><img src="img/inventar/weapons/palice.png"></td>
+      <td><img src="img/inventar/armors/shieldRound.png"></td>
+      <td><img src="img/inventar/armors/human1.png"></td><td><img src="img/inventar/armors/elf1.png"></td><td><img src="img/inventar/armors/ork1.png"></td>
+    </tr>
+    <tr>
+      <td>Kladivo</td><td>Meč</td><td>Žezlo</td><td>Krátký luk</td><td>Dlouhý luk</td><td>Dvojitý luk</td>
+      <td>Obouručný meč</td><td>Sekery</td><td>Palice</td><td>Dřevěný štít</td><td>Elfská zbroj</td><td>Plátová zbroj</td><td>Těžká zbroj</td>
+    </tr>
+    <tr>
+      <td>Silné kladivo</td><td>Velkolepý meč</td><td>Honosné žezlo</td><td>Krátký lesní luk</td><td>Dlouhý luk dlouhých stínů</td><td>Dvojitý luk šlahounů</td>
+      <td>Velký obouručný meč</td><td>Těžké sekery</td><td>Zlostná palice</td><td>Dřevěný štít blokování</td><td>Ladná elfská zbroj</td><td>Tvrzená plátová zbroj</td><td>Vyztužená těžká zbroj</td>
+    </tr>
+    <tr>
+      <td>kladivo</td><td>meč</td><td>žezlo</td><td>krátký luk</td><td>dlouhý luk</td><td>dvojitý luk</td>
+      <td>obouručný meč</td><td>sekery</td><td>palice</td><td>dřevěný štít</td><td>elfská zbroj</td><td>plátová zbroj</td><td>těžká zbroj</td>
+    </tr>
+    <tr>
+      <td>kladivo</td><td>meč</td><td>žezlo</td><td>krátký luk</td><td>dlouhý luk</td><td>dvojitý luk</td>
+      <td>obouručný meč</td><td>sekery</td><td>palice</td><td>dřevěný štít</td><td>elfská zbroj</td><td>plátová zbroj</td><td>těžká zbroj</td>
+    </tr>
+    <tr>
+      <td>kladivo</td><td>meč</td><td>žezlo</td><td>krátký luk</td><td>dlouhý luk</td><td>dvojitý luk</td>
+      <td>obouručný meč</td><td>sekery</td><td>palice</td><td>dřevěný štít</td><td>elfská zbroj</td><td>plátová zbroj</td><td>těžká zbroj</td>
+    </tr>
+    <tr>
+      <td>kladivo</td><td>meč</td><td>žezlo</td><td>krátký luk</td><td>dlouhý luk</td><td>dvojitý luk</td>
+      <td>obouručný meč</td><td>sekery</td><td>palice</td><td>dřevěný štít</td><td>elfská zbroj</td><td>plátová zbroj</td><td>těžká zbroj</td>
+    </tr>
+  </table>
+</div>
+<div id="kopyrajt">&copy; Jiří Zbytovský a Martin Mach, 2011</div>
+<br><br>
+</body>
+</html>
