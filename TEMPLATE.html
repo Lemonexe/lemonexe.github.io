@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Visit my website to discover browser games, a unit conversion tool for engineers and downloadable scenarios for Age of Empires 2, Heroes 4 and OpenTTD!">
+	<title>jira.zby.cz</title><!-- see ui.js -->
+	<link rel="stylesheet" href="res/pure-min.css">
+	<link rel="stylesheet" href="res/side-menu.css">
+	<link rel="stylesheet" href="res/modification.css">
+	<link rel="shortcut icon" href="res/favicon.ico">
+	$MAGIC_STRING_SCRIPT
+</head>
+<body>
+<div id="layout">
+	<!-- Menu toggle -->
+	<a href="#menu" id="menuLink" class="menu-link"><span><!-- Hamburger icon --></span></a>
+	<div id="menu">
+		<div class="pure-menu">
+			<ul class="pure-menu-list">
+				<li class="pure-menu-item"><a href="./index.html" class="pure-menu-link">
+					<span class="czech">Hlavní strana</span>
+					<span class="english">Homepage</span>
+				</a></li>
+				<li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">
+					<span class="czech">O mně</span>
+					<span class="english">About me</span>
+				</a></li>
+				<li class="pure-menu-item"><a href="./games.html" class="pure-menu-link">
+					<span class="czech">Hry</span>
+					<span class="english">Games</span>
+				</a></li>
+				<li class="pure-menu-item"><a href="./tools.html" class="pure-menu-link">
+					<span class="czech">Užitečné</span>
+					<span class="english">Useful</span>
+				</a></li>
+				<li class="pure-menu-item"><a href="./other.html" class="pure-menu-link">
+					<span class="czech">Ostatní</span>
+					<span class="english">Other</span>
+				</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="main">
+		<div id="lang">
+			<a onClick="setLang('english')" class="czech"><img src="res/EN.png"></a>
+			<a onClick="setLang('czech')" class="english"><img src="res/CZ.png"></a>
+		</div>
+		<h1 class="header czech">$MAGIC_STRING_CZECH_HEADER</h1>
+		<h1 class="header english">$MAGIC_STRING_ENGLISH_HEADER</h1>
+		<div class="content czech">$MAGIC_STRING_CZECH_CONTENT</div>
+		<div class="content english">$MAGIC_STRING_ENGLISH_CONTENT</div>
+	</div>
+</div>
+<script src="res/ui.js"></script>
+</body>
+</html>
